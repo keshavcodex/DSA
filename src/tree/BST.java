@@ -13,13 +13,45 @@ public class BST extends BT{
         if(root.data == target) ans = true;
         return ans;
     }
+    Node insert(Node root, int x){
+        if(root == null) return new Node(x);
+        if(root.data > x){
+            root.left = insert(root.left, x);
+        }
+        if(root.data < x){
+            root.right = insert(root.right, x);
+        }
+        return root;
+    }
+    Node insertIterative(Node root, int x){
+        Node node = new Node(x);
+        Node curr = root;
+        Node parent = null;
+        while(curr != null){
+            parent = curr;
+            if(curr.data > x){
+                curr = curr.left;
+            } else curr = curr.right;
+        }
+        if(parent != null){
+            if(parent.data > x){
+                parent.left = node;
+            }else if(parent.data < x){
+                parent.right = node;
+            }
+            return root;
+        }
+        return node;
+    }
     public static void main(String[] args){
         BST obj = new BST();
         Node root = obj.createTree();
         System.out.print("Enter target element: ");
         int target = obj.sc.nextInt();
         boolean ans = obj.searchElement(root, target);
-        System.out.println(ans);
-//        20 10 5 -1 -1 15 -1 -1 30 25 -1 -1 40 -1 -1
+//        80 60 40 -1 50 -1 -1 70 -1 72 -1 -1 160 -1 -1
+        root = obj.insert(root, target);
+        root = obj.insertIterative(root, target);
+        obj.display(root);
     }
 }

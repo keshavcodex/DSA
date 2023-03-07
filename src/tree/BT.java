@@ -20,8 +20,8 @@ public class BT {
         if(node == null){
             return;
         }
-        System.out.print(node.data + " ");
         display(node.left);
+        System.out.print(node.data + " ");
         display(node.right);
     }
     public static void main(String[] args) {
