@@ -4,51 +4,30 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class anagram {
-    public static String[] generatePermutations(String str) {
-        List<String> result = new ArrayList<>();
-        generateHelper(str.toCharArray(), 0, result);
-        return result.toArray(new String[0]);
-    }
 
-    private static void generateHelper(char[] chars, int index, List<String> result) {
-        if (index == chars.length - 1) {
-            result.add(new String(chars));
-            return;
-        }
+    static void getAnagram(String input, String sentence) {
+        int k = input.length();
 
-        for (int i = index; i < chars.length; i++) {
-            swap(chars, index, i);
-            generateHelper(chars, index + 1, result);
-            swap(chars, index, i); // Backtrack
+        for (int i = 0, j = k; j <= sentence.length(); i++, j++) {
+            boolean match = compareString(input, sentence.substring(i, j));
+            if (match) System.out.println("start at " + i);
         }
     }
 
-    private static void swap(char[] chars, int i, int j) {
-        char temp = chars[i];
-        chars[i] = chars[j];
-        chars[j] = temp;
-    }
-
-    public static void anagram(String longStr, String shortStr) {
-        if (longStr.length() < shortStr.length()) {
-            anagram(shortStr, longStr);
-        }
-        int lastStart = 0;
-        for (int i = 0; i < longStr.length(); i++) {
-            int index = longStr.indexOf(shortStr, lastStart);
-            if (index != -1) {
-                System.out.println("start from index " + index);
-                lastStart = index + 1;
-            }
-        }
+    static boolean compareString(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+        char[] s1Array = s1.toCharArray();
+        char[] s2Array = s2.toCharArray();
+        Arrays.sort(s1Array);
+        Arrays.sort(s2Array);
+        s1 = new String(s1Array);
+        s2 = new String(s2Array);
+        return s1.equals(s2);
     }
 
     public static void main(String[] args) {
         String input = "aaba";
         String sentence = "aabaabaa";
-        String[] permutations = generatePermutations(input);
-        for(String str: permutations){
-            anagram(str, sentence);
-        }
+        getAnagram(input, sentence);
     }
 }
