@@ -1,32 +1,27 @@
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
 
 class Main {
-    static void printSubArray(int[] arr, int s, int e){
-        for (int i = s; i <= e; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
-    }
+    static int[][] dp;
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String input = "1 2 2 3 -3 2 13 -9, 4";
-        String[] arrayInput = input.split(",");
-        int target = Integer.parseInt(arrayInput[1].trim());
-        String[] arrayNum = arrayInput[0].split(" ");
-        int[] arr = new int[arrayNum.length];
-        for (int i = 0; i < arrayNum.length; i++) {
-            arr[i] = Integer.parseInt(arrayNum[i]);
-        }
-        System.out.println("target: " + target);
-        for (int i = 0; i < arr.length; i++) {
-            int sum = 0;
-            for (int j = i; j < arr.length; j++) {
-                sum += arr[j];
-                if (sum == target) {
-                    printSubArray(arr, i, j);
-                }
-            }
+        int[] wt = {1, 3, 5, 6};
+        int[] val = {10, 5, 15, 20};
+        int w = 7;
+        dp = new int[wt.length + 1][w + 1];
+        System.out.println(knapsack(wt, val, w, wt.length));
+        for (int[] ele: dp){
+            System.out.println(Arrays.toString(ele));
         }
     }
+    private static int knapsack(int[] wt, int [] val, int w, int n){
+        if(n == 0 || w == 0) return 0;
+        if(dp[n][w] != 0) return dp[n][w];
+
+        int left = 0, right = 0;
+
+        if(wt[n - 1] <= w) left = knapsack(wt, val, w - wt[n - 1], n - 1) + val[n - 1];
+        right = knapsack(wt, val, w, n - 1);
+
+        return dp[n][w] = Math.max(left, right);
+    }
+
 }

@@ -1,4 +1,4 @@
-package Graph;
+package Graph.undirected;
 
 import java.util.ArrayList;
 
