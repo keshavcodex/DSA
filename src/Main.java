@@ -1,27 +1,33 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 
 class Main {
-    static int[][] dp;
+    static boolean[][] dp;
+    static boolean[][] visited;
     public static void main(String[] args) {
-        int[] wt = {1, 3, 5, 6};
-        int[] val = {10, 5, 15, 20};
-        int w = 7;
-        dp = new int[wt.length + 1][w + 1];
-        System.out.println(knapsack(wt, val, w, wt.length));
-        for (int[] ele: dp){
-            System.out.println(Arrays.toString(ele));
-        }
+        int[] arr = {2, 3, 7, 8,4,1, 10};
+        int target = 10;
+        dp = new boolean[arr.length + 1][target + 1];
+        visited = new boolean[arr.length + 1][target + 1];
+
+        subset(arr, 0, target, new ArrayList<>());
+
     }
-    private static int knapsack(int[] wt, int [] val, int w, int n){
-        if(n == 0 || w == 0) return 0;
-        if(dp[n][w] != 0) return dp[n][w];
+    static private boolean subset(int[] arr, int i, int target, ArrayList<Integer> list){
+        if(target == 0){
+            System.out.println(list);
+            return true;
+        }
+        if(i == arr.length || target < 0) return false;
+        if(visited[i][target]) return dp[i][target];
 
-        int left = 0, right = 0;
+        boolean exclude = subset(arr, i + 1, target, list);
 
-        if(wt[n - 1] <= w) left = knapsack(wt, val, w - wt[n - 1], n - 1) + val[n - 1];
-        right = knapsack(wt, val, w, n - 1);
+        list.add(arr[i]);
+        boolean include = subset(arr, i + 1, target - arr[i], list);
+        list.remove(list.size() - 1);
 
-        return dp[n][w] = Math.max(left, right);
+        visited[i][target] = true;
+        return dp[i][target] = exclude || include;
     }
 
 }
